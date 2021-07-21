@@ -1,7 +1,13 @@
+#DOCKER-COMPOSE WORDPRESS CON NGINX Y PHP-FMP
+
 Para poner lanzar el docker-compose seguir estos pasos:
 
--> Crear fichero .env
+-> Descargar docker-compose.yml
+
+-> Crear fichero .env 
+
 -> Rellenar el fichero con los datos:
+
     MARIADB_VERSION=Versión de MariaDB que queremos instalar
     ROOT_PASSWORD_DB=Password de Root de la base de datos
     DATABASE=Nombre de la base de datos

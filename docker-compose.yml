@@ -1,0 +1,58 @@
+version: '3'
+services:
+  db:
+    image: "mariadb:${MARIADB_VERSION}"
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD_DB}
+      - MYSQL_DATABASE=${DATABASE}
+      - MYSQL_USER=${USER_DB}
+      - MYSQL_PASSWORD=${PASSWORD_DB}
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - app-network
+  wordpress:
+    image: "wordpress:${WORDPRESS_VERSION}"
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - db
+    volumes:
+      - wordpress:/var/www/html
+    environment:
+      - "WORDPRESS_DB_USER=${WORDPRESS_DB_USER}"
+      - "WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}"
+      - "WORDPRESS_DB_HOST=db:3306"
+    networks:
+      - app-network
+  nginx:
+    depends_on:
+      - wordpress
+    image: "nginx:${NGINX_VERSION}"
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8100:80"
+    volumes:
+      - wordpress:/var/www/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/log:/var/log/nginx
+    networks:
+      - app-network
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    networks:
+        - app-network
+    environment:
+      PMA_HOST: db
+
+volumes:
+    mariadb:
+    wordpress:
+networks:
+  app-network:
+    driver: bridge

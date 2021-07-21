@@ -17,3 +17,5 @@ Para poner lanzar el docker-compose seguir estos pasos:
     WORDPRESS_DB_USER=Usuario de la BD
     WORDPRESS_DB_PASSWORD=Password de la BD
     NGINX_VERSION=Versión de servidor web que queremos utilizar
+
+-> Para lanzar docker-compose tenemos que poner esta sintencia: 'docker-compose up -d'
